@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const SALT = 10;
 
 const register = async (req, res) => {
@@ -24,7 +26,19 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  res.sendStatus(200);
+  const payload = {
+    email: req.body.email,
+  };
+
+  const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "15m",
+  });
+  const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
+
+  return res.status(200).json({
+    access_token: accessToken,
+    refreshToken: refreshToken,
+  });
 };
 
 const logout = async (req, res) => {

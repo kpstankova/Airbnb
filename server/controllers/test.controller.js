@@ -22,4 +22,8 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUsers };
+const fail = (req, res) => {
+  res.send("Token verification failed");
+};
+
+module.exports = { createUser, getUsers, fail };
