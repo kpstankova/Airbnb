@@ -31,9 +31,7 @@ const generateuid = () => {
   return crypto.randomBytes(6).toString("hex");
 };
 
-const loginAfterAuthentication = (email) => {
-  const payload = { email };
-
+const loginAfterAuthentication = (payload) => {
   const accessToken = jwtGeneratorService.generateAccessToken(payload);
   const refreshToken = jwtGeneratorService.generateRefreshToken({
     accessToken,
@@ -46,8 +44,11 @@ const loginAfterAuthentication = (email) => {
 };
 
 const login = async (req, res) => {
-  const email = req.user.email;
-  return res.status(200).json(loginAfterAuthentication(email));
+  const payload = {
+    id: req.user.user_id,
+    email: req.user.email,
+  };
+  return res.status(200).json(loginAfterAuthentication(payload));
 };
 
 const verify = async (req, res) => {
@@ -134,8 +135,8 @@ const refresh = async (req, res) => {
   try {
     await jwtBlacklistService.blackListToken(accessToken);
     await jwtBlacklistService.blackListToken(refreshToken);
-    const { email } = await jwtGeneratorService.verifyToken(accessToken);
-    return res.status(200).json(loginAfterAuthentication(email));
+    const { id, email } = await jwtGeneratorService.verifyToken(accessToken);
+    return res.status(200).json(loginAfterAuthentication({ id, email }));
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
