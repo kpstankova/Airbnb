@@ -6,21 +6,26 @@ const passportCustom = require("passport-custom");
 const CustomStrategy = passportCustom.Strategy;
 const AirbnbPassport = new Passport();
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("../models/User");
+const userService = require("../services/userService");
+const jwtBlacklistService = require("../services/jwtBlacklistService");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const verifyUserFunction = async (email, password, done) => {
   try {
-    const user = await User.query().where({ email: email }).first();
+    const user = await userService.getUserByEmail(email);
     console.log(user);
 
     if (!user) {
-      return done("User or password are wrong", false);
+      return done(null, false, { message: "User or password are wrong" });
     }
     const isPasswordCorrect = bcrypt.compareSync(password, user.password);
     if (!isPasswordCorrect) {
-      return done("User or password are wrong", false);
+      return done(null, false, { message: "User or password are wrong" });
+    }
+
+    if (!user.verified) {
+      return done(null, false, { message: "Account is not verified!" });
     }
     return done(null, user);
   } catch (err) {
@@ -46,16 +51,46 @@ AirbnbPassport.use(
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.ACCESS_TOKEN_SECRET,
     },
-    function (jwtPaylaod, done) {
-      console.log("access-jwt STRATEGY");
+    (jwtPaylaod, done) => {
       return done(null, jwtPaylaod);
     }
   )
 );
 
-// AirbnbPassport.use(
-//   "airbnb-custom-local",
-//   new CustomStrategy(async function (req, done) {})
-// );
+AirbnbPassport.use(
+  "refresh-jwt",
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromBodyField("refreshToken"),
+      secretOrKey: process.env.REFRESH_TOKEN_SECRET,
+    },
+    (payload, done) => {
+      return done(null, payload);
+    }
+  )
+);
+
+AirbnbPassport.use(
+  "blacklist-jwt",
+  new CustomStrategy(async (req, done) => {
+    let token;
+    if (req.header.authorization) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+    if (req.body.refreshToken) {
+      token = req.body.refreshToken;
+    }
+    if (!token) {
+      done(null, req);
+    }
+
+    const tokenIsBlacklisted = await jwtBlacklistService.checkToken(token);
+    if (tokenIsBlacklisted) {
+      done(null, false, { message: "Token blacklisted" });
+    } else {
+      done(null, req);
+    }
+  })
+);
 
 module.exports = AirbnbPassport;
