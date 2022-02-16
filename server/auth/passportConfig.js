@@ -74,7 +74,7 @@ AirbnbPassport.use(
   "blacklist-jwt",
   new CustomStrategy(async (req, done) => {
     let token;
-    if (req.header.authorization) {
+    if (req.headers.authorization) {
       token = req.headers.authorization.split(" ")[1];
     }
     if (req.body.refreshToken) {

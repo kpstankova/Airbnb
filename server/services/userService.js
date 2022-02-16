@@ -34,6 +34,16 @@ const changePassword = async (email, password) => {
     .where({ email: email });
 };
 
+const deleteUser = async (email) => {
+  return await User.query().where({ email: email }).del();
+};
+
+const updateUser = async (email, name, phone, profilePic) => {
+  return await User.query()
+    .update({ name: name, phone: phone, profile_pic: profilePic })
+    .where({ email: email });
+};
+
 module.exports = {
   createUser,
   getUserByEmail,
@@ -41,4 +51,6 @@ module.exports = {
   verifyUser,
   setNewPassword,
   changePassword,
+  deleteUser,
+  updateUser,
 };

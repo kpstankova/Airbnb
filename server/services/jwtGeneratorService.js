@@ -19,6 +19,8 @@ const verifyToken = (token) => {
       if (err) {
         reject(err);
       }
+      console.log("=======================verify");
+      console.log(payload);
       resolve(payload);
     });
   });
