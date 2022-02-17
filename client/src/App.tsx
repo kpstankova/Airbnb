@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Provider } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 import './App.scss';
+import { History } from "history";
+import { store } from './redux/store';
+import { ConnectedRouter } from 'connected-react-router';
+import Homepage from './pages/homepage/homepage';
+import NavbarComponent from './components/navbar/navbar.component';
+import ForgotPasswordPage from './pages/forgot-password/forgot-password.page';
 
-function App() {
+interface AppProps {
+  history: History;
+}
+
+const App = (props: AppProps) => {
+  const { history } = props;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <ConnectedRouter history={history}>
+          <NavbarComponent/>
+          <Switch>
+            <Route exact={true} path="/" component={Homepage} />
+            <Route exact={true} path='/forgot-password' component={ForgotPasswordPage}/>
+          </Switch>
+        </ConnectedRouter>
+      </div>
+    </Provider>
   );
 }
 
