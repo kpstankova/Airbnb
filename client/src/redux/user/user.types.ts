@@ -12,6 +12,7 @@ export interface UserState {
     registeredUser: boolean;
     authenticatedUser: boolean;
     currentUser: User;
+    uid: string;
 }
 
 export interface RegisterState {

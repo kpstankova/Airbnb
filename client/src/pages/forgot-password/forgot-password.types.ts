@@ -1,5 +1,9 @@
 import { makeStyles } from "@material-ui/core";
 
+export interface ForgotPasswordProps {
+    routeParams: any;
+}
+
 export const forgotPassword = makeStyles(()=> ({
     buttonRoot:{
         '&:hover': {

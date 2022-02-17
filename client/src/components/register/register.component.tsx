@@ -5,22 +5,23 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { Link } from 'react-router-dom';
 import { selectRegisterModal } from '../../redux/modal-visibility/modal.selectors';
 import { StoreState } from '../../redux/root-reducer';
-import { IResetToggles, IToggleLogin, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
+import { IResetToggles, IToggleLogin, IToggleVerificationModal, TModalReducerActions } from '../../redux/modal-visibility/modal.actions';
 import { ModalActionTypes } from '../../redux/modal-visibility/modal.types';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 import { useFormik } from 'formik';
-// import { LoginState, RegisterState, User, UserActionTypes } from '../../redux/user/user.types';
 import axios from "axios";
-// import { ILoginFailure, ILoginSuccess, IRegisterFailure, IRegisterSuccess, TUserReducerActions } from '../../redux/user/user.actions';
-import { push, CallHistoryMethodAction } from "connected-react-router";
-import { RegisterModalProps } from './register.types';
+// import { push, CallHistoryMethodAction } from "connected-react-router";
+import { headers, RegisterModalProps, validationSchema } from './register.types';
 import { dialogStyles } from '../login/login.types';
 import { Dialog, Fade, TextField } from '@material-ui/core';
+import { LoginState, RegisterState, User, UserActionTypes } from '../../redux/user/user.types';
+import { ILoginFailure, ILoginSuccess, IRegisterFailure, IRegisterSuccess, TUserReducerActions} from '../../redux/user/user.actions';
 
 
 const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
-    const { resetTogglesModalAction, toggleLoginModalAction, toggleRegisterModal } = props;
+    const { resetTogglesModalAction, toggleLoginModalAction, toggleRegisterModal, registerUserSuccessAction, registerUserErrorAction,
+        loginSuccessAction, loginFailureAction, toggleVerificationModalAction } = props;
     const [response, setResponseState] = useState<string>("");
 
     const styles = dialogStyles();
@@ -48,12 +49,12 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
 
     // const handleLogin = (newUser: LoginState) => {
     //     return axios
-    //         .post(`http://localhost:3001/auth/login`, {
+    //         .post(`http://localhost:3001/api/auth/login`, {
     //             email: newUser.email,
     //             password: newUser.password,
     //         }, { headers: headers })
     //         .then((response: any) => {
-    //             loginSuccessAction({ id: response.data.id, email: response.data.email, role: response.data.role });
+    //             loginSuccessAction({ id: response.data.id, email: response.data.email });
     //             localStorage.setItem('accessToken', response.data.accessToken);
     //         })
     //         .catch((error: any) => {
@@ -62,45 +63,40 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
     //         });
     // }
 
-    // const handleRegister = (newUser: RegisterState) => {
-    //     return axios
-    //         .post(`http://localhost:3001/auth/register`, {
-    //             email: newUser.email,
-    //             password: newUser.password,
-    //             role: registerRole,
-    //             iban: newUser.iban
-    //         }, { headers: headers })
-    //         .then((response: any) => {
-    //             registerUserSuccessAction();
-    //             handleVerification(newUser.email);
-    //             handleLogin({ email: newUser.email, password: newUser.password });
-    //             redirectToOnboarding();
-    //         })
-    //         .catch((error: any) => {
-    //             setResponseState(error)
-    //             registerUserErrorAction(error);
-    //         })
-    // }
+    const handleRegister = (newUser: RegisterState) => {
+        return axios
+            .post(`http://localhost:3001/api/auth/register`, {
+                email: newUser.email,
+                password: newUser.password
+            }, { headers: headers })
+            .then((response: any) => {
+                registerUserSuccessAction(response.data.uid);
+                // handleVerification(newUser.email);
+                // handleLogin({ email: newUser.email, password: newUser.password });
+                toggleVerificationModalAction();
+            })
+            .catch((error: any) => {
+                setResponseState(error)
+                registerUserErrorAction(error);
+            })
+    }
 
-    // const { handleSubmit, handleChange, values, errors } = useFormik({
-    //     initialValues: {
-    //         name: '',
-    //         email: '',
-    //         password: '',
-    //         confirmPassword: '',
-    //         role: registerRole,
-    //         iban: ''
-    //     },
-    //     validateOnBlur: true,
-    //     validationSchema,
-    //     onSubmit: (values, {resetForm}) => {
-    //         const { name, email, password, role, iban } = values;
-    //         handleRegister(values);
-    //         handleClose();
-    //         resetForm();
-    //         resetTogglesModalAction();
-    //     }
-    // })
+    const { handleSubmit, handleChange, values, errors } = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            confirmPassword: ''
+        },
+        validateOnBlur: true,
+        validationSchema,
+        onSubmit: (values, {resetForm}) => {
+            const { email, password } = values;
+            handleRegister(values);
+            handleClose();
+            resetForm();
+            resetTogglesModalAction();
+        }
+    })
 
     return (
         <Dialog
@@ -124,7 +120,7 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                         <h1 className='title'>Welcome to Airbnb</h1>
 
                         {response ? <div className='error-box'>{response}</div> : null}
-                        <form className='login-form' autoComplete='on' >
+                        <form className='login-form' autoComplete='on' onSubmit={handleSubmit} >
                             <TextField
                                 classes={{ root: styles.textFieldRoot }}
                                 type='email'
@@ -133,8 +129,8 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                                 hiddenLabel={true}
                                 name='email'
                                 variant='standard'
-                                // value={values.email} onChange={handleChange} error={errors.email === ""}
-                                // helperText={errors.email ? errors.email : null}
+                                value={values.email} onChange={handleChange} error={errors.email === ""}
+                                helperText={errors.email ? errors.email : null}
                                 InputLabelProps={{ shrink: false }}
                                 FormHelperTextProps={{
                                     style: {
@@ -151,8 +147,8 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                                 hiddenLabel={true}
                                 name='password'
                                 variant='standard'
-                                // value={values.password} onChange={handleChange} error={errors.password === ""}
-                                // helperText={errors.password ? errors.password : null}
+                                value={values.password} onChange={handleChange} error={errors.password === ""}
+                                helperText={errors.password ? errors.password : null}
                                 InputLabelProps={{ shrink: false }}
                                 FormHelperTextProps={{
                                     style: {
@@ -169,8 +165,8 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                                 hiddenLabel={true}
                                 name='confirmPassword'
                                 variant='standard'
-                                // value={values.confirmPassword} onChange={handleChange} error={errors.confirmPassword === ""}
-                                // helperText={errors.confirmPassword ? errors.confirmPassword : null}
+                                value={values.confirmPassword} onChange={handleChange} error={errors.confirmPassword === ""}
+                                helperText={errors.confirmPassword ? errors.confirmPassword : null}
                                 InputLabelProps={{ shrink: false }}
                                 FormHelperTextProps={{
                                     style: {
@@ -203,11 +199,15 @@ const mapStateToProps = (state: StoreState): { toggleRegisterModal: boolean } =>
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReducerActions>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
         toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
-        
+        registerUserSuccessAction: (data: string) => dispatch<IRegisterSuccess>({ type: UserActionTypes.REGISTER_SUCCESS, data: data }),
+        registerUserErrorAction: (data: string) => dispatch<IRegisterFailure>({ type: UserActionTypes.REGISTER_FAILED, data: data }),
+        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({ type: UserActionTypes.LOGIN_SUCCESS, data: data }),
+        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data }),
+        toggleVerificationModalAction: () =>  dispatch<IToggleVerificationModal>({type: ModalActionTypes.TOGGLE_VERIFICATION_MODAL})
     }
 }
 

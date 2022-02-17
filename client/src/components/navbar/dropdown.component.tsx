@@ -9,6 +9,7 @@ import { Dispatch } from "redux";
 import LoginComponent from '../login/login.component';
 import ForgotPasswordComponent from '../forgot-password/forgot-password.component';
 import RegisterModalComponent from '../register/register.component';
+import VerificationModal from '../verificationModal/verificationModal';
 
 const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
     const { open,anchorEl, handleClose, toggleLoginModalAction, toggleRegisterModalAction } = props;
@@ -30,6 +31,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
             <LoginComponent />
             <ForgotPasswordComponent />
             <RegisterModalComponent />
+            <VerificationModal/>
             <Menu
                 id="fade-menu"
                 getContentAnchorEl={null}

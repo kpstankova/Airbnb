@@ -1,9 +1,11 @@
 import { makeStyles } from "@material-ui/core";
+import { User } from "../../redux/user/user.types";
+import * as Yup from 'yup'
 
 export interface LoginModalProps {
     toggleLoginModal: boolean
-    // loginSuccessAction: (data: User) => void;
-    // loginFailureAction: (data: string) => void;
+    loginSuccessAction: (data: User) => void;
+    loginFailureAction: (data: string) => void;
     toggleRegisterModalAction: () => void;
     resetTogglesModalAction: () => void;
     toggleForgotPasswordModalAction: () => void;
@@ -36,3 +38,8 @@ export const dialogStyles = makeStyles(() => ({
         }
     }
 }));
+
+export const validationSchema = Yup.object({
+    email: Yup.string().email().required('Email is required'),
+    password: Yup.string().required('Password is required')
+});

@@ -6,6 +6,7 @@ const express = require("express");
 require("dotenv").config();
 const router = require("./routers/api.router");
 const knexConfig = require("./knexfile");
+const cors = require("cors");
 
 const knex = Knex(knexConfig);
 Model.knex(knex);
@@ -13,6 +14,8 @@ Model.knex(knex);
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+
 // app.use(flash());
 app.use("/api", router);
 

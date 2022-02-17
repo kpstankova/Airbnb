@@ -17,3 +17,8 @@ export const selectForgotPasswordModal = createSelector (
     [selectModal],
     (modal) => modal.toggleForgotPasswordModal
 )
+
+export const selectVerificationModal = createSelector (
+    [selectModal],
+    (modal) => modal.toggleVerificationModal
+)

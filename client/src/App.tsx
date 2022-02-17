@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import './App.scss';
 import { History } from "history";
 import { store } from './redux/store';
@@ -13,6 +13,12 @@ interface AppProps {
   history: History;
 }
 
+const renderForgotPasswordPage = (routeProps: any) => {
+  return <React.Fragment>
+      <ForgotPasswordPage routeParams={routeProps.match.params} />
+  </React.Fragment>;
+}
+
 const App = (props: AppProps) => {
   const { history } = props;
 
@@ -23,7 +29,10 @@ const App = (props: AppProps) => {
           <NavbarComponent/>
           <Switch>
             <Route exact={true} path="/" component={Homepage} />
-            <Route exact={true} path='/forgot-password' component={ForgotPasswordPage}/>
+            {/* <Route exact={false} path={forgotPasswordPath} component={ForgotPasswordPage}/> */}
+            <Route path={'/forgotPassword/:uid'} render={(routeProps: RouteComponentProps) =>
+                            renderForgotPasswordPage({ ...routeProps })} exact={true}
+                        />
           </Switch>
         </ConnectedRouter>
       </div>

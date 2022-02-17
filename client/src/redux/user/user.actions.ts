@@ -6,6 +6,7 @@ export interface IUserBaseAction {
 
 export interface IRegisterSuccess extends IUserBaseAction {
     type: UserActionTypes.REGISTER_SUCCESS;
+    data: string;
 };
 
 export interface IRegisterFailure extends IUserBaseAction {

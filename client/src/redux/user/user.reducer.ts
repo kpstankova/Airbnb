@@ -5,6 +5,7 @@ const InitialState: UserState = {
     registeredUser: false,
     authenticatedUser: false,
     currentUser: {} as User,
+    uid: ''
 };
 
 export const userReducer = (state = InitialState, action: TUserReducerActions): UserState => {
@@ -13,6 +14,7 @@ export const userReducer = (state = InitialState, action: TUserReducerActions): 
             return {
                 ...state,
                 registeredUser: true,
+                uid: action.data
             };
         case UserActionTypes.REGISTER_FAILED:
             return {
@@ -35,7 +37,8 @@ export const userReducer = (state = InitialState, action: TUserReducerActions): 
                 ...state,
                 authenticatedUser: false,
                 registeredUser: false,
-                currentUser: {} as User
+                currentUser: {} as User,
+                uid: ''
             }
         case UserActionTypes.LOGOUT_FAILED:
             return {
