@@ -6,7 +6,6 @@ export interface IUserBaseAction {
 
 export interface IRegisterSuccess extends IUserBaseAction {
     type: UserActionTypes.REGISTER_SUCCESS;
-    data: string;
 };
 
 export interface IRegisterFailure extends IUserBaseAction {
@@ -33,5 +32,9 @@ export interface ILogoutFailure extends IUserBaseAction {
     data: string;
 };
 
+export interface ISetUserUid extends IUserBaseAction {
+    type: UserActionTypes.SET_USER_UID;
+    data: string;
+}
 export type TUserReducerActions = IRegisterSuccess | IRegisterFailure| ILogoutSuccess 
-                                  | ILogoutFailure | ILoginSuccess | ILoginFailure;
+                                  | ILogoutFailure | ILoginSuccess | ILoginFailure | ISetUserUid;

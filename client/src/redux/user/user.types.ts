@@ -5,7 +5,7 @@ export enum UserActionTypes {
     LOGIN_FAILED = 'LOGIN_FAILED',
     LOGOUT_SUCESS = 'LOGOUT_SUCESS',
     LOGOUT_FAILED = 'LOGOUT_FAILED',
-    SET_REGISTER_ROLE = "SET_REGISTER_ROLE"
+    SET_USER_UID = 'SET_USER_UID'
 }
 
 export interface UserState {

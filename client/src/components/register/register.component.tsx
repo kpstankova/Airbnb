@@ -16,12 +16,12 @@ import { headers, RegisterModalProps, validationSchema } from './register.types'
 import { dialogStyles } from '../login/login.types';
 import { Dialog, Fade, TextField } from '@material-ui/core';
 import { LoginState, RegisterState, User, UserActionTypes } from '../../redux/user/user.types';
-import { ILoginFailure, ILoginSuccess, IRegisterFailure, IRegisterSuccess, TUserReducerActions} from '../../redux/user/user.actions';
+import { ILoginFailure, ILoginSuccess, IRegisterFailure, IRegisterSuccess, ISetUserUid, TUserReducerActions} from '../../redux/user/user.actions';
 
 
 const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
     const { resetTogglesModalAction, toggleLoginModalAction, toggleRegisterModal, registerUserSuccessAction, registerUserErrorAction,
-        loginSuccessAction, loginFailureAction, toggleVerificationModalAction } = props;
+        setUserUidAction, toggleVerificationModalAction } = props;
     const [response, setResponseState] = useState<string>("");
 
     const styles = dialogStyles();
@@ -70,7 +70,8 @@ const RegisterModalComponent: React.FC<RegisterModalProps> = ({ ...props }) => {
                 password: newUser.password
             }, { headers: headers })
             .then((response: any) => {
-                registerUserSuccessAction(response.data.uid);
+                setUserUidAction(response.data.uid);
+                registerUserSuccessAction();
                 // handleVerification(newUser.email);
                 // handleLogin({ email: newUser.email, password: newUser.password });
                 toggleVerificationModalAction();
@@ -203,11 +204,10 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReduc
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
         toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
-        registerUserSuccessAction: (data: string) => dispatch<IRegisterSuccess>({ type: UserActionTypes.REGISTER_SUCCESS, data: data }),
+        registerUserSuccessAction: () => dispatch<IRegisterSuccess>({ type: UserActionTypes.REGISTER_SUCCESS }),
         registerUserErrorAction: (data: string) => dispatch<IRegisterFailure>({ type: UserActionTypes.REGISTER_FAILED, data: data }),
-        loginSuccessAction: (data: User) => dispatch<ILoginSuccess>({ type: UserActionTypes.LOGIN_SUCCESS, data: data }),
-        loginFailureAction: (data: string) => dispatch<ILoginFailure>({ type: UserActionTypes.LOGIN_FAILED, data: data }),
-        toggleVerificationModalAction: () =>  dispatch<IToggleVerificationModal>({type: ModalActionTypes.TOGGLE_VERIFICATION_MODAL})
+        toggleVerificationModalAction: () =>  dispatch<IToggleVerificationModal>({type: ModalActionTypes.TOGGLE_VERIFICATION_MODAL}),
+        setUserUidAction: (data: string) => dispatch<ISetUserUid>({ type: UserActionTypes.SET_USER_UID, data: data})
     }
 }
 

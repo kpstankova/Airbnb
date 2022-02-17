@@ -13,11 +13,14 @@ import '../login/login.styles.scss'
 import { dialogStyles } from '../login/login.types';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { ForgotPasswordComponentProps } from './fortgot-password.types';
+import { ForgotPasswordComponentProps, validationSchema } from './fortgot-password.types';
 import { Dialog, Fade, TextField } from '@material-ui/core';
+import { headers } from '../register/register.types';
+import { UserActionTypes } from '../../redux/user/user.types';
+import { ISetUserUid, TUserReducerActions } from '../../redux/user/user.actions';
 
-const ForgotPasswordComponent:React.FC<ForgotPasswordComponentProps> = ({ ...props }) => {
-    const { toggleForgotPasswordModal, resetTogglesModalAction, toggleLoginModalAction, toggleRegisterModalAction } = props;
+const ForgotPasswordComponent: React.FC<ForgotPasswordComponentProps> = ({ ...props }) => {
+    const { toggleForgotPasswordModal, resetTogglesModalAction, toggleLoginModalAction, toggleRegisterModalAction, setUserUidAction } = props;
 
     const styles = dialogStyles();
     const [response, setResponseState] = useState<string>("");
@@ -34,21 +37,35 @@ const ForgotPasswordComponent:React.FC<ForgotPasswordComponentProps> = ({ ...pro
         toggleLoginModalAction();
     }
 
+    const handleSendEmail = (email: string) => {
+        return axios
+            .post(`http://localhost:3001/api/auth/forgotPassword`, {
+                email: email
+            }, { headers: headers })
+            .then((response: any) => {
+                setUserUidAction(response.data.uid);
+                return response.data;
+            })
+            .catch((error: any) => {
+                setResponseState(`${error}`);
+            });
+    }
+
     const { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: {
             email: ''
         },
         validateOnBlur: true,
-        // validationSchema,
-        onSubmit: (values, {resetForm}) => {
+        validationSchema,
+        onSubmit: (values, { resetForm }) => {
             const { email } = values;
-            // handleSendNewPassword(email);
+            handleSendEmail(email)
             resetForm();
             handleClose();
             resetTogglesModalAction();
         }
     })
-    
+
     return (
         <Dialog
             classes={{ root: styles.dialogRoot, paper: styles.dialogPaper }}
@@ -119,11 +136,12 @@ const mapStateToProps = (state: StoreState): { toggleForgotPasswordModal: boolea
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions>) => {
+const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReducerActions>) => {
     return {
         resetTogglesModalAction: () => dispatch<IResetToggles>({ type: ModalActionTypes.RESET_TOGGLES_MODAL }),
-        toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL}),
-        toggleRegisterModalAction: () => dispatch<IToggleRegister>({ type: ModalActionTypes.TOGGLE_REGISTER_MODAL})
+        toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
+        toggleRegisterModalAction: () => dispatch<IToggleRegister>({ type: ModalActionTypes.TOGGLE_REGISTER_MODAL }),
+        setUserUidAction: (data: string) => dispatch<ISetUserUid>({ type: UserActionTypes.SET_USER_UID, data: data})
     }
 }
 

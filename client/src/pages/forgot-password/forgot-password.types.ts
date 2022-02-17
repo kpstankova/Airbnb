@@ -1,7 +1,10 @@
 import { makeStyles } from "@material-ui/core";
+import * as Yup from 'yup'
+import { PASSWORD_REGEX } from "../../components/register/register.types";
 
 export interface ForgotPasswordProps {
     routeParams: any;
+    redirectToHome: () => void;
 }
 
 export const forgotPassword = makeStyles(()=> ({
@@ -29,4 +32,18 @@ export const forgotPassword = makeStyles(()=> ({
         fontSize: '10px',
         width: '240px'
     }
-}))
+}));
+
+export const validationSchema = Yup.object({
+    password: Yup.string().required('Password is required').matches(
+        PASSWORD_REGEX,
+        "Field requires at least 8 Characters, one Uppercase letter, one Number and one special case Character"
+    ),
+    confirmPassword: Yup.string().required('Confirm Password is required').when("password", {
+        is: (val: any) => (val && val.length > 0 ? true : false),
+        then: Yup.string().oneOf(
+            [Yup.ref("password")],
+            "The password must be the same"
+        )
+    })
+});

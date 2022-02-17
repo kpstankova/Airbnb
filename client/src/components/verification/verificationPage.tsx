@@ -12,7 +12,7 @@ const VerificationPage: React.FC<VerificationPageProps> = ({ ...props }) => {
     const [response, setResponseState] = useState('');
     const handleVerification = () => {
         return axios
-            .get(`http://localhost:3001/api/auth/verify/${userUid}`)
+            .get(`http://localhost:3001/api/auth/verify/${routeParams.uid!}`)
             .then((response: any) => {
                 setResponseState(`${response.data.message}`)
                 return response.data;

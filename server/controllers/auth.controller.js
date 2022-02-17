@@ -90,7 +90,7 @@ const changePassword = async (req, res) => {
  */
 const setNewPassword = async (req, res) => {
   const newPassword = req.body.newPassword;
-  const uid = req.params.uid;
+  const uid = req.body.uid;
   if (!newPassword || !uid)
     return res
       .status(400)

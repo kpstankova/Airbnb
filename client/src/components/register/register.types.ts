@@ -3,17 +3,16 @@ import * as Yup from 'yup'
 
 export interface RegisterModalProps {
     toggleRegisterModal: boolean;
-    loginSuccessAction: (data: User) => void;
-    loginFailureAction: (data: string) => void;
-    registerUserSuccessAction: (data: string) => void;
+    registerUserSuccessAction: () => void;
     registerUserErrorAction: (data: string) => void;
     resetTogglesModalAction: () => void;
     toggleLoginModalAction: () => void;
     toggleVerificationModalAction: () => void;
+    setUserUidAction: (data: string) => void;
     // redirectToOnboarding: () => void;
 }
 
-const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
 export const validationSchema = Yup.object({
     email: Yup.string().email().required('Email is required'),

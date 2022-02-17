@@ -12,6 +12,10 @@ export const useStyles = makeStyles((theme) => ({
     }
 }));
 
+export interface NavbarComponentProps {
+    redirectToHome: () => void;
+}
+
 export interface DropdownComponentProps {
     open: boolean;
     anchorEl: any;

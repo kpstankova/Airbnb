@@ -14,7 +14,6 @@ export const userReducer = (state = InitialState, action: TUserReducerActions): 
             return {
                 ...state,
                 registeredUser: true,
-                uid: action.data
             };
         case UserActionTypes.REGISTER_FAILED:
             return {
@@ -44,6 +43,11 @@ export const userReducer = (state = InitialState, action: TUserReducerActions): 
             return {
                 ...state,
                 authenticatedUser: false
+            }
+        case UserActionTypes.SET_USER_UID:
+            return {
+                ...state,
+                uid: action.data
             }
         default:
             return state;
