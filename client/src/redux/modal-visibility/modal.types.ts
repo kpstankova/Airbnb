@@ -3,7 +3,8 @@ export enum ModalActionTypes {
     TOGGLE_REGISTER_MODAL = "TOGGLE_REGISTER_MODAL",
     TOGGLE_FORGOT_PASSWORD_MODAL = "TOGGLE_FORGOT_PASSWORD_MODAL",
     TOGGLE_VERIFICATION_MODAL = "TOGGLE_VERIFICATION_MODAL",
-    RESET_TOGGLES_MODAL = "RESET_TOGGLES_MODAL",
+    TOGGLE_CHANGE_PASSWORD_MODAL = "TOGGLE_CHANGE_PASSWORD_MODAL",
+    RESET_TOGGLES_MODAL = "RESET_TOGGLES_MODAL"
 }
 
 export interface ModalState {
@@ -11,4 +12,5 @@ export interface ModalState {
     toggleLoginModal: boolean;
     toggleForgotPasswordModal: boolean;
     toggleVerificationModal: boolean;
+    toggleChangePasswordModal: boolean;
 }

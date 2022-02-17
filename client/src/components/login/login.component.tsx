@@ -178,4 +178,4 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReduc
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

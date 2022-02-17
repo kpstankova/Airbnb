@@ -27,6 +27,7 @@ export interface DropdownComponentProps {
     logoutUserSuccessAction: () => void;
     redirectToHome: () => void;
     logoutUserErrorAction: (data: string) => void;
+    toggleChangePasswordModalAction: () => void;
 }
 
 export const dropdownStyles = makeStyles((theme) => ({

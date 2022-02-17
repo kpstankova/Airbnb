@@ -24,4 +24,8 @@ export interface IToggleVerificationModal extends IModalBaseAction {
     type: ModalActionTypes.TOGGLE_VERIFICATION_MODAL
 }
 
-export type TModalReducerActions = IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles | IToggleVerificationModal;
+export interface IToggleChangePasswordModal extends IModalBaseAction {
+    type: ModalActionTypes.TOGGLE_CHANGE_PASSWORD_MODAL;
+}
+
+export type TModalReducerActions = IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles | IToggleVerificationModal | IToggleChangePasswordModal;
