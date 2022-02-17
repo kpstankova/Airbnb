@@ -17,10 +17,7 @@ const register = async (req, res) => {
     const uid = generateuid();
     await userService.createUser(email, password, uid);
     await emailService.sendVerificationEmail(email, uid);
-    return res.status(201).json({
-      message:
-        "Registration is successful. Check your email to verify your account.",
-    });
+    return res.status(201).json({ uid: uid });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: err });
@@ -117,10 +114,7 @@ const forgotPassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     await emailService.sendForgotPasswordEmail(email, uid);
-    return res.status(200).json({
-      message:
-        "Message send successfully. Check your email to change your password.",
-    });
+    return res.status(200).json({ uid: uid });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -163,6 +157,7 @@ module.exports = {
   login,
   verify,
   changePassword,
+  setNewPassword,
   forgotPassword,
   refresh,
   logout,

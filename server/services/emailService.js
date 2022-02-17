@@ -15,7 +15,7 @@ const buildVerificationMessage = (uid) => {
     <br>
     <p>Click the button below in order to verify your account.</p>
     <br>
-    <form action="http://localhost:3001/api/auth/verify/${uid}">
+    <form action="http://localhost:3000/verify/${uid}">
     <input type="submit" value="Verify" />
     </form>
     <br/>
