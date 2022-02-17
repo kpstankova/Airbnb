@@ -6,6 +6,7 @@ const {
   login,
   verify,
   changePassword,
+  setNewPassword,
   forgotPassword,
   refresh,
   logout,
@@ -37,6 +38,6 @@ router.post("/register", register);
 router.post("/forgotPassword", forgotPassword);
 router.get("/verify/:uid", verify);
 router.post("/logout", logout);
-//router.put("/setNewPassword");
+router.put("/setNewPassword", setNewPassword);
 
 module.exports = router;
