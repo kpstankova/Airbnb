@@ -8,7 +8,8 @@ import { ConnectedRouter } from 'connected-react-router';
 import Homepage from './pages/homepage/homepage';
 import NavbarComponent from './components/navbar/navbar.component';
 import ForgotPasswordPage from './pages/forgot-password/forgot-password.page';
-import VerificationPage from './components/verification/verificationPage'
+import VerificationPage from './components/verification/verificationPage';
+import OnboardingPageComponent from './pages/onboarding/onboarding.page'
 interface AppProps {
   history: History;
 }
@@ -41,6 +42,7 @@ const App = (props: AppProps) => {
             <Route path={'/verify/:uid'} render={(routeProps: RouteComponentProps) =>
                             renderVerificationPage({ ...routeProps })} exact={true}
                         />
+            <Route exact={true} component={OnboardingPageComponent}/>
           </Switch>
         </ConnectedRouter>
       </div>
