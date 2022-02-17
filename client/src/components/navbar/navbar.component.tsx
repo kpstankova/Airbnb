@@ -30,7 +30,22 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({ ...props }) => {
         <div className='navbar-container'>
             <img className='navbar-logo' src={logoImage} alt='Airbnb' onClick={() => redirectToHome()}/>
             <div className='search-component'>
-
+                <div className='field-component'>
+                    <div className='search-fields-label'>Location</div>
+                    <input className='search-fields-input' placeholder='Where are you going' readOnly/>
+                </div>
+                <div className='field-component'>
+                    <div className='search-fields-label'>Check in</div>
+                    <input className='search-fields-input' placeholder='Add dates' readOnly/>
+                </div>
+                <div className='field-component'>
+                    <div className='search-fields-label'>Check out</div>
+                    <input className='search-fields-input' placeholder='Add dates' readOnly/>
+                </div>
+                <div className='field-component'>
+                    <div className='search-fields-label'>Guests</div>
+                    <input className='search-fields-input' placeholder='Add guests' readOnly/>
+                </div>
             </div>
             <div className='user-container'>
                 <Button className='host-button' classes={{ root: styles.buttonRoot }}>Become a host</Button>
