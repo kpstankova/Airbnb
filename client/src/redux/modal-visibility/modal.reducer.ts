@@ -4,7 +4,8 @@ import { TModalReducerActions } from './modal.actions';
 const InitialState: ModalState = {
     toggleRegisterModal: false,
     toggleLoginModal: false,
-    toggleForgotPasswordModal: false
+    toggleForgotPasswordModal: false,
+    toggleVerificationModal: false
 };
 
 export const modalReducer = (state = InitialState, action: TModalReducerActions): ModalState => {
@@ -14,22 +15,33 @@ export const modalReducer = (state = InitialState, action: TModalReducerActions)
                 ...state,
                 toggleRegisterModal: true,
                 toggleLoginModal: false,
-                toggleForgotPasswordModal: false
+                toggleForgotPasswordModal: false,
+                toggleVerificationModal: false
             };
         case ModalActionTypes.TOGGLE_LOGIN_MODAL:
             return {
                 ...state,
                 toggleRegisterModal: false,
                 toggleLoginModal: true,
-                toggleForgotPasswordModal: false
+                toggleForgotPasswordModal: false,
+                toggleVerificationModal: false
             };
         case ModalActionTypes.TOGGLE_FORGOT_PASSWORD_MODAL:
             return {
                 ...state,
                 toggleRegisterModal: false,
                 toggleLoginModal: false,
-                toggleForgotPasswordModal: true
+                toggleForgotPasswordModal: true,
+                toggleVerificationModal: false
             };
+        case ModalActionTypes.TOGGLE_VERIFICATION_MODAL:
+            return {
+                ...state,
+                toggleRegisterModal: false,
+                toggleLoginModal: false,
+                toggleForgotPasswordModal: false,
+                toggleVerificationModal: true
+            }
         case ModalActionTypes.RESET_TOGGLES_MODAL:
             return InitialState;
         default:

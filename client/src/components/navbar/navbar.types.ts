@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+import { User } from "../../redux/user/user.types";
 
 export const useStyles = makeStyles((theme) => ({
     buttonRoot : {
@@ -12,12 +13,20 @@ export const useStyles = makeStyles((theme) => ({
     }
 }));
 
+export interface NavbarComponentProps {
+    redirectToHome: () => void;
+}
+
 export interface DropdownComponentProps {
     open: boolean;
     anchorEl: any;
+    currentUser: User;
     handleClose: () => void;
     toggleLoginModalAction: () => void;
     toggleRegisterModalAction: () => void;
+    logoutUserSuccessAction: () => void;
+    redirectToHome: () => void;
+    logoutUserErrorAction: (data: string) => void;
 }
 
 export const dropdownStyles = makeStyles((theme) => ({

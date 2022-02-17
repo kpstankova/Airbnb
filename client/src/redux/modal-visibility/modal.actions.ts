@@ -20,6 +20,8 @@ export interface IResetToggles extends IModalBaseAction {
     type: ModalActionTypes.RESET_TOGGLES_MODAL;
 }
 
+export interface IToggleVerificationModal extends IModalBaseAction {
+    type: ModalActionTypes.TOGGLE_VERIFICATION_MODAL
+}
 
-
-export type TModalReducerActions = IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles;
+export type TModalReducerActions = IToggleRegister | IToggleLogin | IToggleForgotPassword | IResetToggles | IToggleVerificationModal;
