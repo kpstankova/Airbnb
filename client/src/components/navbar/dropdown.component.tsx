@@ -9,7 +9,7 @@ import { Dispatch } from "redux";
 import LoginComponent from '../login/login.component';
 import ForgotPasswordComponent from '../forgot-password/forgot-password.component';
 import RegisterModalComponent from '../register/register.component';
-import VerificationModal from '../verificationModal/verificationModal';
+import VerificationModal from '../verification/verificationModal';
 
 const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
     const { open,anchorEl, handleClose, toggleLoginModalAction, toggleRegisterModalAction } = props;
