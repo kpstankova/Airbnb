@@ -27,7 +27,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "knex:migrate:make": "knex --knexfile ./knexfile.js migrate:make",
     "knex:migrate:latest": "knex --knexfile ./knexfile.js migrate:latest",
-    "knex:migrate:rollback": "knex --knexfile ./knexfile.js migrate:rollback"
+    "knex:migrate:rollback": "knex --knexfile ./knexfile.js migrate:rollback",
+    "knex:migrate:down":     "knex --knexfile ./knexfile.js migrate:down"
   },
   "keywords": [],
   "author": "",
