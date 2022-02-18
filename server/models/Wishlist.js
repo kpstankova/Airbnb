@@ -1,22 +1,21 @@
 const { Model } = require("objection");
 
-class HousingReservedDates extends Model {
+class Wishlist extends Model {
   static get tableName() {
-    return "housing_reserved_dates";
+    return "wishlist";
   }
 
   static get jsonSchema() {
     return {
       type: "object",
       required: [],
+
       properties: {
+        user_id: { type: "integer" },
         housing_id: { type: "integer" },
-        guest_id: { type: "integer" },
-        start_date: { type: "string" },
-        end_date: { type: "string" },
       },
     };
   }
 }
 
-module.exports = HousingReservedDates;
+module.exports = Wishlist;
