@@ -21,7 +21,7 @@ import ChangePasswordComponent from '../change-password/change-password.componen
 
 const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
     const { currentUser, open, anchorEl, handleClose, toggleLoginModalAction, toggleRegisterModalAction,
-        logoutUserSuccessAction, redirectToHome, logoutUserErrorAction, toggleChangePasswordModalAction  } = props;
+        logoutUserSuccessAction, redirectToHome, logoutUserErrorAction, toggleChangePasswordModalAction } = props;
 
     const classes = dropdownStyles();
 
@@ -37,6 +37,19 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
 
     const handleOpenChangePassword = () => {
         toggleChangePasswordModalAction();
+        handleClose();
+    }
+
+    const handleOpenMessages = () => {
+
+    }
+
+    const handleOpenWishList = () => {
+
+    }
+
+    const handleOpenAccount = () => {
+
     }
 
     const handleLogout = () => {
@@ -44,20 +57,20 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
         const refreshToken = localStorage.getItem('refreshToken');
         handleClose();
         return axios
-			.post(`http://localhost:3001/api/auth/logout`, {
-				accessToken: accessToken,
+            .post(`http://localhost:3001/api/auth/logout`, {
+                accessToken: accessToken,
                 refreshToken: refreshToken
-			}, { headers: headers })
-			.then((response: any) => {
-				logoutUserSuccessAction();
-				localStorage.clear();
-				redirectToHome();
+            }, { headers: headers })
+            .then((response: any) => {
+                logoutUserSuccessAction();
+                localStorage.clear();
+                redirectToHome();
                 // clearProfileImageAction();
                 return response.data;
-			})
-			.catch((error: any) => {
-				logoutUserErrorAction(error);
-			});
+            })
+            .catch((error: any) => {
+                logoutUserErrorAction(error);
+            });
     };
 
     return (
@@ -86,9 +99,9 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
             >
                 {currentUser && currentUser.email ?
                     <div>
-                        <MenuItem onClick={handleOpenLogin}> Messages </MenuItem>
-                        <MenuItem onClick={handleOpenRegister}> Wishlist </MenuItem>
-                        <MenuItem>Account</MenuItem>
+                        <MenuItem onClick={handleOpenMessages}> Messages </MenuItem>
+                        <MenuItem onClick={handleOpenWishList}> Wishlist </MenuItem>
+                        <MenuItem onClick={handleOpenAccount}>Account</MenuItem>
                         <MenuItem onClick={handleOpenChangePassword}>Change password</MenuItem>
                         <MenuItem onClick={handleLogout}>Log out</MenuItem>
                     </div> :
@@ -97,7 +110,6 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
                         <MenuItem onClick={handleOpenRegister}> Sign up </MenuItem>
                     </div>
                 }
-
             </Menu>
         </React.Fragment>
     )
@@ -113,10 +125,10 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReduc
     return {
         toggleLoginModalAction: () => dispatch<IToggleLogin>({ type: ModalActionTypes.TOGGLE_LOGIN_MODAL }),
         toggleRegisterModalAction: () => dispatch<IToggleRegister>({ type: ModalActionTypes.TOGGLE_REGISTER_MODAL }),
-        logoutUserSuccessAction: () => dispatch<ILogoutSuccess>({type: UserActionTypes.LOGOUT_SUCESS}),
-        logoutUserErrorAction: (data: string) => dispatch<ILogoutFailure>({ type: UserActionTypes.LOGOUT_FAILED, data: data}),
+        logoutUserSuccessAction: () => dispatch<ILogoutSuccess>({ type: UserActionTypes.LOGOUT_SUCESS }),
+        logoutUserErrorAction: (data: string) => dispatch<ILogoutFailure>({ type: UserActionTypes.LOGOUT_FAILED, data: data }),
         redirectToHome: () => dispatch(push('/')),
-        toggleChangePasswordModalAction: () => dispatch<IToggleChangePasswordModal>({ type: ModalActionTypes.TOGGLE_CHANGE_PASSWORD_MODAL})
+        toggleChangePasswordModalAction: () => dispatch<IToggleChangePasswordModal>({ type: ModalActionTypes.TOGGLE_CHANGE_PASSWORD_MODAL })
     }
 }
 

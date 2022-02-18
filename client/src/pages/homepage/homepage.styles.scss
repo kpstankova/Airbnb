@@ -1,11 +1,34 @@
 .homepage {
     width: 100%;
-    height: 950px;
-    display: flex;
-    flex-direction: row;
-    background-repeat: no-repeat;
-    background-size: cover;
-    align-items: center;
-    justify-content: center;
-    // background-image: url('https://i.pinimg.com/originals/9c/07/38/9c07387ced2f945034c3e7c84f87aa1b.gif');
+    position: relative;
+    .home-image {
+        width: 100%;
+        object-fit: cover;
+    }
+    .homepage-banner {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        color: white;
+        .banner-text {
+            font-weight: bold;
+            font-size: larger;
+        }
+        .banner-button {
+            color: purple;
+            background-color: white;
+            padding: 20px 30px;
+            border: 1px solid #dddddd;
+            border-radius: 30px;
+            font-size: larger;
+            font-weight: bold;
+        }
+        .banner-button:hover {
+            box-shadow: 0 14px 9px 0 rgba(233, 228, 228, 0.24), 0 15px 22px rgba(233, 228, 228, 0.24);
+        }
+        .banner-button:active {
+            transform: scale(0.95);
+            transition-duration: 2ms;
+        }
+    }
 }

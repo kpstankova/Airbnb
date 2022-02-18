@@ -6,10 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import { store, history } from './redux/store';
 import { Provider } from 'react-redux';
 
+const searchString = store.getState().search.searchString;
+const startDateFilter = store.getState().search.startDate;
+const endDateFilter = store.getState().search.endDate;
+const numberOfGuests = store.getState().search.numberOfGuests;
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App history={history} />
+      <App history={history} searchString={searchString} startDateFilter={startDateFilter} endDateFilter={endDateFilter} numberOfGuestsFilter={numberOfGuests} />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

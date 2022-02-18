@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import { User } from "../../redux/user/user.types";
+import { SearchProps } from "../helperFunctions";
 
 export const useStyles = makeStyles((theme) => ({
     buttonRoot : {
@@ -14,7 +15,20 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export interface NavbarComponentProps {
+    path: string;
+    searchUrl: string;
+    searchString: string;
+    startDateFilter: Date;
+    endDateFilter: Date;
+    numberOfGuestsFilter: number;
+    placeholder: string;
     redirectToHome: () => void;
+    toggleSearchStringAction: (data: string) => void;
+    toggleStartDateFilterAction: (data: Date) => void;
+    toggleEndDateFilterAction: (data: Date) => void;
+    redirectToSearchResultsPage: (data: SearchProps) => void;
+    toggleGuestNumberFilerAction: (data: number) => void;
+    resetSearchFilters: () => void;
 }
 
 export interface DropdownComponentProps {
@@ -38,6 +52,5 @@ export const dropdownStyles = makeStyles((theme) => ({
     paper: {
         border: '1px solid #d3d4d5',
         borderRadius: '25px !important',
-        left: '1700px !important'
     }
 }));

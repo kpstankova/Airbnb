@@ -1,0 +1,14 @@
+.main-component {
+    display: flex;
+    .section-component {
+        display: flex;
+        flex-direction: column;
+        padding-top: 5px;
+        .search-info-text {
+            font-size: medium;
+        }
+        .search-string-text {
+            font-size: xx-large;
+        }
+    }
+}
