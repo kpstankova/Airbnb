@@ -16,8 +16,8 @@ exports.up = function (knex) {
       .notNullable()
       .references("user_id")
       .inTable("user");
-    table.datetime("start_date").notNullable();
-    table.datetime("end_date").notNullable();
+    table.date("start_date").notNullable();
+    table.date("end_date").notNullable();
   });
 };
 
