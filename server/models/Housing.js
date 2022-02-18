@@ -14,8 +14,12 @@ class Housing extends Model {
         title: { type: "string", minLength: 1, maxLength: 128 },
         description: { type: "string", minLength: 1, maxLength: 512 },
         owner: { type: "integer" },
-        rating: { type: "double" },
+        rating: { type: "number" },
         guests: { type: "integer" },
+        long: { type: "number" },
+        lat: { type: "number" },
+        city: { type: "string", minLength: 1, maxLength: 255 },
+        price: { type: "number" },
       },
     };
   }
