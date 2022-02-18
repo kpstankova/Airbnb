@@ -3,21 +3,21 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.createTable("housing_utils", (table) => {
+  return knex.schema.createTable("wishlist", (table) => {
+    table
+      .integer("user_id")
+      .unsigned()
+      .notNullable()
+      .references("user_id")
+      .inTable("user")
+      .onDelete("CASCADE")
+      .index();
     table
       .integer("housing_id")
       .unsigned()
       .notNullable()
       .references("id")
       .inTable("housing")
-      .onDelete("CASCADE")
-      .index();
-    table
-      .integer("util_id")
-      .unsigned()
-      .notNullable()
-      .references("id")
-      .inTable("utils")
       .onDelete("CASCADE")
       .index();
   });
@@ -27,4 +27,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {};
+exports.down = function (knex) {
+  return knex.schema.dropTable("wishlist");
+};

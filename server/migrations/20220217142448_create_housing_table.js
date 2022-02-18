@@ -15,6 +15,10 @@ exports.up = function (knex) {
       .inTable("user");
     table.double("rating");
     table.integer("guests");
+    table.double("long");
+    table.double("lat");
+    table.string("city");
+    table.double("price");
   });
 };
 
