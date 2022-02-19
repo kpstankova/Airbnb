@@ -35,20 +35,6 @@ const OnboardingPageComponent: React.FC<OnboardingComponentProps> = ({ ...props 
             });
     };
 
-    // const handleProfileImageUpload = () => {
-    //     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-    //     let fd = new FormData();
-    //     fd.append('file', profileImage!.fileWithMeta.file)
-    //     return axios.post(`http://localhost:3001/files/profilePic?id=${currentUser.id}`, fd, config);
-    // };
-
-    // const handleGetStartedButton = (name: string, address: string, vatNumber: string, phoneNumber: string) => {
-    //     handleAdditionalInfo(name, address, vatNumber, phoneNumber);
-    //     if (profileImage) {
-    //         handleProfileImageUpload();
-    //     }
-    // }
-
     const { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: {
             name: '',
@@ -58,8 +44,7 @@ const OnboardingPageComponent: React.FC<OnboardingComponentProps> = ({ ...props 
         validationSchema,
         onSubmit: (values) => {
             const { name, phoneNumber } = values;
-
-            // handleGetStartedButton(name, address, vatNumber, phoneNumber);
+            handleAdditionalInfo(name, phoneNumber);
 
         }
     })

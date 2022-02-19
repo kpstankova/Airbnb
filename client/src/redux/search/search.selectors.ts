@@ -22,3 +22,8 @@ export const selectNumberOfGuests = createSelector(
     [selectSearchBar],
     (search) => search.numberOfGuests
 )
+
+export const selectSearchResults = createSelector(
+    [selectSearchBar],
+    (search) => search.searchResults
+)

@@ -14,7 +14,7 @@ import SearchPageComponent from './pages/search/search.page';
 import { StoreState } from './redux/root-reducer';
 import { selectEndDate, selectNumberOfGuests, selectSearchString, selectStartDate } from './redux/search/search.selectors';
 import { format } from 'date-fns';
-
+import AddHousingComponent from './pages/add-housing/add-housing.component'
 interface AppProps {
   history: History;
   searchString: string;
@@ -38,7 +38,7 @@ const renderVerificationPage = (routeProps: any) => {
 const App = (props: AppProps) => {
   const { history, searchString, startDateFilter, endDateFilter, numberOfGuestsFilter } = props;
   const formattedStartDate = format(new Date(startDateFilter), "dd MMMM yy");
-  const formattedEndDate = format(new Date(endDateFilter), "dd MMMM yy")
+  const formattedEndDate = format(new Date(endDateFilter), "dd MMMM yy");
 
   return (
     <Provider store={store}>
@@ -53,8 +53,9 @@ const App = (props: AppProps) => {
             <Route path={'/verify/:uid'} render={(routeProps: RouteComponentProps) =>
               renderVerificationPage({ ...routeProps })} exact={true}
             />
-            <Route exact={true} path='/onborading' component={OnboardingPageComponent} />
+            <Route exact={true} path='/onboarding' component={OnboardingPageComponent} />
             <Route exact={false} path='/results' component={SearchPageComponent} />
+            <Route exact={true} path='/add-housing' component={AddHousingComponent}/>
           </Switch>
         </ConnectedRouter>
       </div>

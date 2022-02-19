@@ -12,7 +12,7 @@ const updateUser = async (req, res) => {
     const { email, id } = req.user;
     const dirPath = `${process.env.PROFILE_PICS_FOLDER}${id}`;
     const imagePath = `${process.env.PROFILE_PICS_FOLDER}${id}/${id}.jpg`;
-    const defaultImagePath = `${process.env.PROFILE_PICS_FOLDER}pic.jpg`;
+    const defaultImagePath = `${process.env.PROFILE_PICS_FOLDER}/pic.jpg`;
 
     await mkdir(dirPath, { recursive: true });
 
