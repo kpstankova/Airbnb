@@ -1,9 +1,14 @@
+import { HousingItem } from "../../pages/search/searchPage.types";
 import { SearchBarActions } from "./search.types";
 
 export interface ISearchBaseAction {
     type: SearchBarActions;
 }
 
+export interface ILoadSearchResults extends ISearchBaseAction {
+    type: SearchBarActions.LOAD_SEARCH_RESULTS;
+    data: HousingItem[];
+}
 export interface IToggleSearchString extends ISearchBaseAction {
     type: SearchBarActions.TOGGLE_SEARCH_STRING;
     data: string;
@@ -28,4 +33,4 @@ export interface IResetFilters extends ISearchBaseAction {
     type: SearchBarActions.RESET_FILTERS;
 }
 
-export type TSearchReducerActions = IToggleSearchString | IResetFilters | IToggleFilterStartDate | IToggleFilterEndDate | IToggleFilterGuests;
+export type TSearchReducerActions = IToggleSearchString | IResetFilters | IToggleFilterStartDate | IToggleFilterEndDate | IToggleFilterGuests | ILoadSearchResults;

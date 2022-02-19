@@ -21,7 +21,7 @@ import ChangePasswordComponent from '../change-password/change-password.componen
 
 const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
     const { currentUser, open, anchorEl, handleClose, toggleLoginModalAction, toggleRegisterModalAction,
-        logoutUserSuccessAction, redirectToHome, logoutUserErrorAction, toggleChangePasswordModalAction } = props;
+        logoutUserSuccessAction, redirectToHome, logoutUserErrorAction, toggleChangePasswordModalAction, redirectToOnboarding } = props;
 
     const classes = dropdownStyles();
 
@@ -49,7 +49,8 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ ...props }) => {
     }
 
     const handleOpenAccount = () => {
-
+        redirectToOnboarding();
+        handleClose();
     }
 
     const handleLogout = () => {
@@ -128,7 +129,8 @@ const mapDispatchToProps = (dispatch: Dispatch<TModalReducerActions | TUserReduc
         logoutUserSuccessAction: () => dispatch<ILogoutSuccess>({ type: UserActionTypes.LOGOUT_SUCESS }),
         logoutUserErrorAction: (data: string) => dispatch<ILogoutFailure>({ type: UserActionTypes.LOGOUT_FAILED, data: data }),
         redirectToHome: () => dispatch(push('/')),
-        toggleChangePasswordModalAction: () => dispatch<IToggleChangePasswordModal>({ type: ModalActionTypes.TOGGLE_CHANGE_PASSWORD_MODAL })
+        toggleChangePasswordModalAction: () => dispatch<IToggleChangePasswordModal>({ type: ModalActionTypes.TOGGLE_CHANGE_PASSWORD_MODAL }),
+        redirectToOnboarding: () => dispatch(push('/onboarding')),
     }
 }
 

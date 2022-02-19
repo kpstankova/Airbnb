@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+import { HousingItem } from "../../pages/search/searchPage.types";
 import { User } from "../../redux/user/user.types";
 import { SearchProps } from "../helperFunctions";
 
@@ -29,6 +30,8 @@ export interface NavbarComponentProps {
     redirectToSearchResultsPage: (data: SearchProps) => void;
     toggleGuestNumberFilerAction: (data: number) => void;
     resetSearchFilters: () => void;
+    loadSearchResultsAction: (data: HousingItem[]) => void;
+    redirectToAddHousing: () => void;
 }
 
 export interface DropdownComponentProps {
@@ -42,6 +45,7 @@ export interface DropdownComponentProps {
     redirectToHome: () => void;
     logoutUserErrorAction: (data: string) => void;
     toggleChangePasswordModalAction: () => void;
+    redirectToOnboarding: () => void;
 }
 
 export const dropdownStyles = makeStyles((theme) => ({

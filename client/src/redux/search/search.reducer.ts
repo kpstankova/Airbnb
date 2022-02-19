@@ -5,11 +5,18 @@ const InitialState: SearchState = {
     searchString: "",
     startDate: new Date(),
     endDate: new Date(),
-    numberOfGuests: 0
+    numberOfGuests: 0,
+    searchResults: []
 }
 
 export const searchBarReducer = (state = InitialState, action: TSearchReducerActions): SearchState => {
     switch (action.type) {
+        case SearchBarActions.LOAD_SEARCH_RESULTS: {
+            return{
+                ...state,
+                searchResults: action.data
+            }
+        }
         case SearchBarActions.TOGGLE_SEARCH_STRING: {
             return {
                 ...state,

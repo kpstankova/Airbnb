@@ -1,14 +1,29 @@
 .main-component {
     display: flex;
+    width: 100%;
     .section-component {
         display: flex;
         flex-direction: column;
         padding-top: 5px;
+        width:40%;
         .search-info-text {
             font-size: medium;
         }
         .search-string-text {
             font-size: xx-large;
         }
+
+        .items-container {
+            display: flex;
+            flex-direction: column;
+        }
     }
+
+    .map-component {
+        display: inline-flex;
+        width: 60%;
+        // min-width: 600px;
+    }
+
+    
 }

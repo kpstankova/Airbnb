@@ -12,14 +12,16 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker } from 'react-date-range';
 import { composeSearchUrl, decomposeSearchUrl, SearchProps, SearchUrlProps } from "../helperFunctions";
 import { StoreState } from "../../redux/root-reducer";
-import { IResetFilters, IToggleFilterEndDate, IToggleFilterGuests, IToggleFilterStartDate, IToggleSearchString, TSearchReducerActions } from "../../redux/search/search.actions";
+import { ILoadSearchResults, IResetFilters, IToggleFilterEndDate, IToggleFilterGuests, IToggleFilterStartDate, IToggleSearchString, TSearchReducerActions } from "../../redux/search/search.actions";
 import { SearchBarActions } from "../../redux/search/search.types";
 import { selectEndDate, selectNumberOfGuests, selectSearchString, selectStartDate } from "../../redux/search/search.selectors";
+import { HousingItem } from "../../pages/search/searchPage.types";
+import axios from "axios";
 
 const NavbarComponent: React.FC<NavbarComponentProps> = ({ ...props }) => {
     const { path, searchUrl, searchString, startDateFilter, endDateFilter, numberOfGuestsFilter, placeholder,
         toggleSearchStringAction, toggleStartDateFilterAction, toggleEndDateFilterAction, toggleGuestNumberFilerAction,
-        resetSearchFilters, redirectToHome, redirectToSearchResultsPage } = props;
+        resetSearchFilters, redirectToHome, redirectToSearchResultsPage, loadSearchResultsAction, redirectToAddHousing } = props;
 
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -28,6 +30,8 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({ ...props }) => {
     const [endDate, setEndDate] = useState<Date>(new Date());
     const [numberOfGuests, setNumberOfGuests] = useState<number>(1);
     const [searchValues, setSearchValues] = useState<SearchUrlProps>();
+
+    const accessToken = localStorage.getItem('accessToken');
 
     const selectionRange = {
         startDate: startDate,
@@ -69,6 +73,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({ ...props }) => {
     };
 
     const search = () => {
+        getSearchResults();
         redirectToSearchResultsPage({
             searchString: searchValue,
             startDate: startDate,
@@ -96,6 +101,22 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({ ...props }) => {
         if (params.numberOfGuests) {
             toggleGuestNumberFilerAction(parseInt(params.numberOfGuests))
         }
+    }
+//TODO: 
+    const getSearchResults = () => {
+        return axios
+            .get(`http://localhost:3001/api/housing/`, {
+                'headers': { 
+                    Authorization: 'Bearer ' + accessToken 
+                }
+            })
+            .then((response: any) => {
+                console.log(response.data)
+                loadSearchResultsAction(response.data);
+            })
+            .catch((error: any) => {
+                console.log(error);
+            })
     }
 
     useEffect(()=> {
@@ -132,11 +153,11 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({ ...props }) => {
                         type='text'
                         onChange={handleInputChange}
                         value={searchValue} 
-                        placeholder={path === '/' ? 'Start your search' : placeholder}/>
+                        placeholder={path !== '/results' ? 'Start your search' : placeholder}/>
                     <SearchIcon className="search-icon" />
                 </div>
                 <div className='user-container'>
-                    <p style={{ color: 'grey', cursor: 'pointer' }}>Become a host</p>
+                    <p style={{ color: 'grey', cursor: 'pointer' }} onClick={() => redirectToAddHousing()}>Become a host</p>
                     <GlobeAltIcon className='globe-icon' />
                     <div className='user-icons'>
                         <MenuIcon className='icons' />
@@ -193,7 +214,9 @@ const mapDispatchToProps = (dispatch: Dispatch<CallHistoryMethodAction | TSearch
         toggleStartDateFilterAction: (data: Date) => dispatch<IToggleFilterStartDate>({ type: SearchBarActions.TOGGLE_FILTER_START_DATE, data: data }),
         toggleEndDateFilterAction: (data: Date) => dispatch<IToggleFilterEndDate>({ type: SearchBarActions.TOGGLE_FILTER_END_DATE, data: data }),
         toggleGuestNumberFilerAction: (data: number) => dispatch<IToggleFilterGuests>({ type: SearchBarActions.TOGGLE_FILTER_GUESTS, data: data }),
-        resetSearchFilters: () => dispatch<IResetFilters>({ type: SearchBarActions.RESET_FILTERS})
+        resetSearchFilters: () => dispatch<IResetFilters>({ type: SearchBarActions.RESET_FILTERS}),
+        loadSearchResultsAction: (data: HousingItem[]) => dispatch<ILoadSearchResults>({ type: SearchBarActions.LOAD_SEARCH_RESULTS, data: data}),
+        redirectToAddHousing: () => dispatch(push('/add-housing'))
     }
 }
 
